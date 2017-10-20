@@ -1,0 +1,2 @@
+﻿Set-Location C:\Users\Florian\IdeaProjects\Audioanalyzer\pyAudioAnalysis
+python C:/Users/Florian/IdeaProjects/Audioanalyzer/pyAudioAnalysis/audioAnalysis.py speakerDiarization -i C:/Users/Florian/IdeaProjects/Audioanalyzer/pyAudioAnalysis/data/diarizationExample.wav --num 4
