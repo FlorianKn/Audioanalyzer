@@ -1,0 +1,2 @@
+﻿Set-Location C:\Users\Florian\IdeaProjects\Audioanalyzer\pyAudioAnalysis
+python C:/Users/Florian/IdeaProjects/Audioanalyzer/pyAudioAnalysis/audioAnalysis.py segmentClassifyFile -i C:/Users/Florian/IdeaProjects/Audioanalyzer/pyAudioAnalysis/data/scottish.wav --model svm --modelName C:/Users/Florian/IdeaProjects/Audioanalyzer/pyAudioAnalysis/data/svmSM

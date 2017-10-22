@@ -530,11 +530,22 @@ def mtFileClassification(inputFile, modelName, modelType, plotResults=False, gtF
     if os.path.isfile(gtFile):
         [segStartGT, segEndGT, segLabelsGT] = readSegmentGT(gtFile)
 
-        s = open('segemntationLog.txt', 'w')
-        s.write(str(Duration) + "\n")
-        s.write(str(segEndGT) + "\n")
-        s.write(str(segLabelsGT) + "\n")
-        s.close()
+        print 'IdentDUR'
+        print Duration
+        print 'IdentSEG'
+
+        for seg in segEndGT:
+            print seg
+        print 'IdentLAB'
+
+        for seg in segLabelsGT:
+            print seg
+        print 'ENd----'
+        # s = open('segmentationLog.txt', 'w')
+        # s.write(str(Duration) + "\n")
+        # s.write(str(segEndGT) + "\n")
+        # s.write(str(segLabelsGT) + "\n")
+        # s.close()
 
         flagsGT, classNamesGT = segs2flags(segStartGT, segEndGT, segLabelsGT, mtStep)
         flagsIndGT = []
@@ -903,7 +914,7 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
         print 'IdentDUR'
         print Duration
         print 'IdentSTART'
-        
+
         for seg in segStart:
             print seg
         print 'IdentEND'
