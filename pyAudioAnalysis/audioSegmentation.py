@@ -532,7 +532,7 @@ def mtFileClassification(inputFile, modelName, modelType, plotResults=False, gtF
 
         print 'IdentDUR'
         print Duration
-        print 'IdentSEG'
+        print 'IdentSTART'
 
         for seg in segEndGT:
             print seg
@@ -540,7 +540,7 @@ def mtFileClassification(inputFile, modelName, modelType, plotResults=False, gtF
 
         for seg in segLabelsGT:
             print seg
-        print 'ENd----'
+        print 'IdentLABEND'
         # s = open('segmentationLog.txt', 'w')
         # s.write(str(Duration) + "\n")
         # s.write(str(segEndGT) + "\n")
@@ -925,6 +925,7 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
 
         for label in segLabels:
             print label
+        print 'IdentLABEND'
 
     if PLOT:
         fig = plt.figure()

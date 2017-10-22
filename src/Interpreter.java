@@ -21,7 +21,7 @@ public abstract class Interpreter {
         return segmentLabels;
     }
 
-    public ArrayList<String> setSegmentLabels(ArrayList<String> commandLineInput) {
+    /*public ArrayList<String> setSegmentLabels(ArrayList<String> commandLineInput) {
         int index = 0;
 
         // Get index of string IdentLAB
@@ -35,6 +35,9 @@ public abstract class Interpreter {
             segmentLabels.add(commandLineInput.get(i));
         }
         return segmentLabels;
+    }*/
+    public void setSegmentLabels(ArrayList<String> segmentLabels) {
+        this.segmentLabels = getPartOfList("IdentLAB", "IdentLABEND", segmentLabels);
     }
 
     //get part of list specified by a start- and end string

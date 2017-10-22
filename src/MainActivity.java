@@ -9,7 +9,13 @@ public class MainActivity {
         PythonBridge bridge = new PythonBridge();
 
         ArrayList<String> commandLineInput = bridge.executePython(CMD_SEG);
-       // DiarizationInterpreter d = new DiarizationInterpreter();
-        System.out.println(commandLineInput);
+        SegmentationInterpreter d = new SegmentationInterpreter();
+        d.setSegment(commandLineInput);
+        d.setDuration(commandLineInput);
+        d.setSegmentLabels(commandLineInput);
+        System.out.println(d.getSegment());
+        System.out.println(d.getDuration());
+        System.out.println(d.getSegmentLabels());
+
     }
 }
