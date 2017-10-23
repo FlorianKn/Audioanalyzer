@@ -10,12 +10,6 @@ public class MainActivity {
 
         ArrayList<String> commandLineInput = bridge.executePython(CMD_SEG);
         SegmentationInterpreter d = new SegmentationInterpreter();
-        d.setSegment(commandLineInput);
-        d.setDuration(commandLineInput);
-        d.setSegmentLabels(commandLineInput);
-        System.out.println(d.getSegment());
-        System.out.println(d.getDuration());
-        System.out.println(d.getSegmentLabels());
-
+        DiarizationInterpreter a = new DiarizationInterpreter();
     }
 }

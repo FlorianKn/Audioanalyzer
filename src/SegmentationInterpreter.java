@@ -2,18 +2,18 @@ import java.util.ArrayList;
 
 public class SegmentationInterpreter extends Interpreter {
     private ArrayList<String> segment = new ArrayList<>();
-    private float speech;
-    private float music;
+    private double speech;
+    private double music;
 
     public ArrayList<String> getSegment() {
         return segment;
     }
 
-    public float getSpeech() {
+    public double getSpeech() {
         return speech;
     }
 
-    public float getMusic() {
+    public double getMusic() {
         return music;
     }
 
@@ -21,12 +21,28 @@ public class SegmentationInterpreter extends Interpreter {
         this.segment = getPartOfList("IdentSTART", "IdentLAB", segment);
     }
 
-    public void setSpeech(float speech) {
-        this.speech = speech;
+    //speech in percentage
+    public void setSpeech(ArrayList<String> speechPercentage) {
+        ArrayList<String> speechStr;
+
+        speechStr =  getPartOfList("IdentSPEECH","IdentSEND", speechPercentage);
+        if(speechStr.size() != 0) {
+            // first and last char are [ and ], can't convert to double
+            String s = speechStr.get(0).substring(1, speechStr.get(0).length()-1);
+            this.speech = Double.parseDouble(s);
+
+        }
     }
 
-    public void setMusic(float music) {
-        this.music = music;
+    //music in percentage
+    public void setMusic(ArrayList<String> musicPercentage) {
+        ArrayList<String> musicStr;
+
+        musicStr =  getPartOfList("IdentSEND","IdentMEND", musicPercentage);
+        if(musicStr.size() != 0) {
+            String s = musicStr.get(0).substring(1, musicStr.get(0).length()-1);
+            this.music = Double.parseDouble(s);
+        }
     }
 
     @Override

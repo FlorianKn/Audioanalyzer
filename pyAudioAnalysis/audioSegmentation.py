@@ -200,6 +200,12 @@ def plotSegmentationResults(flagsInd, flagsIndGT, classNames, mtStep, ONLY_EVALU
         font = {'size': 10}
         plt.rc('font', **font)
 
+        print "IdentSPEECH"
+        print Percentages[0]
+        print "IdentSEND"
+        print Percentages[1]
+        print "IdentMEND"
+
         fig = plt.figure()
         ax1 = fig.add_subplot(211)
         ax1.set_yticks(numpy.array(range(len(classNames))))
@@ -218,7 +224,6 @@ def plotSegmentationResults(flagsInd, flagsIndGT, classNames, mtStep, ONLY_EVALU
         ax2.set_xticks(numpy.array(range(len(classNames) + 1)))
         ax2.set_xticklabels([" "] + classNames)
         ax2.bar(numpy.array(range(len(classNames))) + 0.5, Percentages)
-
         ax3 = fig.add_subplot(224)
         plt.title("Segment average duration per class")
         ax3.axis((0, len(classNames)+1, 0, AvDurations.max()))
@@ -540,7 +545,7 @@ def mtFileClassification(inputFile, modelName, modelType, plotResults=False, gtF
 
         for seg in segLabelsGT:
             print seg
-        print 'IdentLABEND'
+        print 'IdentMUSIC'
         # s = open('segmentationLog.txt', 'w')
         # s.write(str(Duration) + "\n")
         # s.write(str(segEndGT) + "\n")
@@ -567,7 +572,6 @@ def mtFileClassification(inputFile, modelName, modelType, plotResults=False, gtF
         return (flagsInd, classNamesGT, acc, CM)
     else:
         return (flagsInd, classNames, acc, CM)
-
 
 def evaluateSegmentationClassificationDir(dirName, modelName, methodName):
     flagsAll = numpy.array([])
@@ -925,7 +929,7 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
 
         for label in segLabels:
             print label
-        print 'IdentLABEND'
+        print 'IdentMUSIC'
 
     if PLOT:
         fig = plt.figure()
