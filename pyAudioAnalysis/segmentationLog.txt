@@ -1,0 +1,19 @@
+{
+   "Segmentation": {
+      "duration": 247, 
+      "segments": [
+         4.3, 
+         23.73, 
+         216.45, 
+         234.43, 
+         247.32
+      ], 
+      "label": [
+         "music", 
+         "speech", 
+         "music", 
+         "speech", 
+         "music"
+      ]
+   }
+}
