@@ -8,7 +8,7 @@ public class MainActivity {
     {
         PythonBridge bridge = new PythonBridge();
 
-        ArrayList<String> commandLineInput = bridge.executePython(CMD_SEG);
+        ArrayList<String> commandLineInput = bridge.executePython(CMD_DIA);
         SegmentationInterpreter d = new SegmentationInterpreter();
         DiarizationInterpreter a = new DiarizationInterpreter();
     }

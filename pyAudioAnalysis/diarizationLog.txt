@@ -1,4 +1,32 @@
-41
-[  0.    6.3  11.3  15.8  18.8  27.8  34.4]
-[  6.3  11.3  15.8  18.8  27.8  34.4  42. ]
-['speakerA', 'speakerB', 'speakerC', 'speakerB', 'speakerC', 'speakerB', 'speakerD']
+{
+   "Diarization": {
+      "duration": 41, 
+      "segmentEnd": [
+         6.3, 
+         11.3, 
+         15.8, 
+         18.8, 
+         27.8, 
+         34.4, 
+         42.0
+      ], 
+      "segmentStart": [
+         0.0, 
+         6.3, 
+         11.3, 
+         15.8, 
+         18.8, 
+         27.8, 
+         34.4
+      ], 
+      "label": [
+         "speakerA", 
+         "speakerB", 
+         "speakerC", 
+         "speakerB", 
+         "speakerC", 
+         "speakerB", 
+         "speakerD"
+      ]
+   }
+}

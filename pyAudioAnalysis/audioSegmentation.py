@@ -18,6 +18,7 @@ import sklearn.cluster
 import hmmlearn.hmm
 import cPickle
 import glob
+import json
 
 """ General utility functions """
 
@@ -542,10 +543,11 @@ def mtFileClassification(inputFile, modelName, modelType, plotResults=False, gtF
         for seg in segEndGT:
             print seg
         print 'IdentLAB'
-
         for seg in segLabelsGT:
             print seg
         print 'IdentMUSIC'
+        with open('segmentationLog.txt', 'w') as outFile:
+            json.dump({'Segmentation':{'duration': Duration, 'segments': segEndGT.tolist(), 'label': segLabelsGT}}, outFile, indent=3)
         # s = open('segmentationLog.txt', 'w')
         # s.write(str(Duration) + "\n")
         # s.write(str(segEndGT) + "\n")
@@ -930,6 +932,9 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
         for label in segLabels:
             print label
         print 'IdentMUSIC'
+
+        with open('diarizationLog.txt', 'w') as outF:
+            json.dump({'Diarization':{'duration': Duration, 'segmentEnd': segEnd.tolist(), 'segmentStart': segStart.tolist(), 'label': segLabels}}, outF, indent=3)
 
     if PLOT:
         fig = plt.figure()
