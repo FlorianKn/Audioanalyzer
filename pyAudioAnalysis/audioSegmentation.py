@@ -18,6 +18,7 @@ import sklearn.cluster
 import hmmlearn.hmm
 import cPickle
 import glob
+import json
 
 """ General utility functions """
 
@@ -200,11 +201,16 @@ def plotSegmentationResults(flagsInd, flagsIndGT, classNames, mtStep, ONLY_EVALU
         font = {'size': 10}
         plt.rc('font', **font)
 
+
+
         print "IdentSPEECH"
-        print Percentages[0]
+        print Percentages[0][0]
         print "IdentSEND"
         print Percentages[1]
         print "IdentMEND"
+
+        with open('segmentationLog.txt', 'w') as outFile:
+            json.dump({'Segmentation':{'duration': gDuration, 'segments': gSegEndGT.tolist(), 'label': gSegLabelsGT, 'speech': Percentages[0][0], 'music': Percentages[1][0] }}, outFile, indent=3)
 
         fig = plt.figure()
         ax1 = fig.add_subplot(211)
@@ -535,6 +541,16 @@ def mtFileClassification(inputFile, modelName, modelType, plotResults=False, gtF
     if os.path.isfile(gtFile):
         [segStartGT, segEndGT, segLabelsGT] = readSegmentGT(gtFile)
 
+
+        global gDuration
+        global gSegEndGT
+        global gSegLabelsGT
+
+        gDuration = Duration
+        gSegEndGT = segEndGT
+        gSegLabelsGT = segLabelsGT
+
+
         print 'IdentDUR'
         print Duration
         print 'IdentSTART'
@@ -542,10 +558,11 @@ def mtFileClassification(inputFile, modelName, modelType, plotResults=False, gtF
         for seg in segEndGT:
             print seg
         print 'IdentLAB'
-
         for seg in segLabelsGT:
             print seg
         print 'IdentMUSIC'
+        #with open('segmentationLog.txt', 'w') as outFile:
+            #json.dump({'Segmentation':{'duration': Duration, 'segments': segEndGT.tolist(), 'label': segLabelsGT, 'speech': percentageSpeech, 'music': percentageMusic }}, outFile, indent=3)
         # s = open('segmentationLog.txt', 'w')
         # s.write(str(Duration) + "\n")
         # s.write(str(segEndGT) + "\n")
@@ -930,6 +947,9 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
         for label in segLabels:
             print label
         print 'IdentMUSIC'
+
+        with open('diarizationLog.txt', 'w') as outF:
+            json.dump({'Diarization':{'duration': Duration, 'segmentEnd': segEnd.tolist(), 'segmentStart': segStart.tolist(), 'label': segLabels}}, outF, indent=3)
 
     if PLOT:
         fig = plt.figure()

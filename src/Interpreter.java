@@ -1,50 +1,42 @@
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class Interpreter {
-    private int duration;
-    private ArrayList<String> labels = new ArrayList<>();
 
-    public int getDuration() {
+    protected long duration;
+    protected ArrayList<String> segmentStart;
+    protected ArrayList<String> label;
+
+    public long getDuration() {
         return duration;
     }
 
-    public void setDuration(ArrayList<String> segmentDuration) {
-        ArrayList<String> durationStr;
-
-        durationStr =  getPartOfList("IdentDUR","IdentSTART",segmentDuration);
-        if(durationStr.size() != 0) {
-            this.duration = Integer.parseInt(durationStr.get(0));
-        }
+    public ArrayList<String> getSegmentStart() {
+        return segmentStart;
     }
 
-    public ArrayList<String> getLabels() {
-        return labels;
+    public ArrayList<String> getLabel() {
+        return label;
     }
 
-    public void setLabels(ArrayList<String> segmentLabels) {
-        this.labels = getPartOfList("IdentLAB", "IdentMUSIC", segmentLabels);
-    }
-
-    //get part of list specified by a start- and end string
-    protected ArrayList<String> getPartOfList(String start, String end,  ArrayList<String> input) {
-        ArrayList<String> list = new ArrayList<>();
-        int startIndex = 0, endIndex  = 0;
-
-
-        for(int i = 0; i < input.size(); i++) {
-            if(input.get(i).contains(start)) {
-                startIndex = i + 1;
-            }
-            else if(input.get(i).contains(end)) {
-                endIndex = i;
-            }
+    JSONObject readJsonFile(String path) {
+        JSONParser parser = new JSONParser();
+        Object obj = null;
+        try {
+            obj = parser.parse(new FileReader(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+        JSONObject jsonObject = (JSONObject) obj;
 
-        for(int i = startIndex; i < endIndex; i++) {
-            list.add(input.get(i));
-        }
-        return  list;
-
+        return  jsonObject;
     }
 
     abstract void createChart();

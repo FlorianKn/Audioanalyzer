@@ -1,22 +1,25 @@
+import org.json.simple.JSONObject;
+
 import java.util.ArrayList;
 
 public class DiarizationInterpreter extends Interpreter {
-    private ArrayList<String> segmentStart = new ArrayList<>();
     private ArrayList<String> segmentEnd = new ArrayList<>();
 
-    public ArrayList<String> getSegmentStart() {
-        return segmentStart;
+    public DiarizationInterpreter(String path) {
+        JSONObject diarizationObject;
+        JSONObject jsonObject;
+
+        jsonObject = readJsonFile(path);
+        diarizationObject = (JSONObject) jsonObject.get("Diarization");
+
+        this.duration = (long) diarizationObject.get("duration");
+        this.segmentStart = (ArrayList<String>) diarizationObject.get("segmentStart");
+        this.label = (ArrayList<String>) diarizationObject.get("label");
+        this.segmentEnd = (ArrayList<String>) diarizationObject.get("segmentEnd");
     }
 
     public ArrayList<String> getSegmentEnd() {
         return segmentEnd;
-    }
-
-    public void setSegmentStart(ArrayList<String> segmentStart) {
-        this.segmentStart = getPartOfList("IdentSTART","IdentEND",segmentStart);
-    }
-    public void setSegmentEnd(ArrayList<String> segmentEnd) {
-        this.segmentEnd = getPartOfList("IdentEND","IdentLAB",segmentEnd);
     }
 
     @Override
