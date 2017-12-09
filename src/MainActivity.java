@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class MainActivity {
@@ -8,8 +9,14 @@ public class MainActivity {
     {
         PythonBridge bridge = new PythonBridge();
 
-        ArrayList<String> commandLineInput = bridge.executePython(CMD_SEG);
-        SegmentationInterpreter d = new SegmentationInterpreter("pyAudioAnalysis/segmentationLog.txt");
-        DiarizationInterpreter a = new DiarizationInterpreter("pyAudioAnalysis/diarizationLog.txt");
+        //ArrayList<String> commandLineInput = bridge.executePython(CMD_SEG);
+        //SegmentationInterpreter d = new SegmentationInterpreter("pyAudioAnalysis/segmentationLog.txt");
+        //DiarizationInterpreter a = new DiarizationInterpreter("pyAudioAnalysis/diarizationLog.txt");
+
+        JFrame mainMenu = new JFrame("Audioanalyzer");
+        mainMenu.setContentPane(new MainMenu().panel1);
+        mainMenu.setDefaultCloseOperation(mainMenu.EXIT_ON_CLOSE);
+        mainMenu.pack();
+        mainMenu.setVisible(true);
     }
 }
