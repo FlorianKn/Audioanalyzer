@@ -14,7 +14,7 @@ public class MainActivity {
         //DiarizationInterpreter a = new DiarizationInterpreter("pyAudioAnalysis/diarizationLog.txt");
 
         JFrame mainMenu = new JFrame("Audioanalyzer");
-        mainMenu.setContentPane(new MainMenu().panel1);
+        mainMenu.setContentPane(new MainMenu().mainPanel);
         mainMenu.setDefaultCloseOperation(mainMenu.EXIT_ON_CLOSE);
         mainMenu.pack();
         mainMenu.setVisible(true);
