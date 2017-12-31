@@ -14,9 +14,10 @@ public class MainActivity {
         //DiarizationInterpreter a = new DiarizationInterpreter("pyAudioAnalysis/diarizationLog.txt");
 
         JFrame mainMenu = new JFrame("Audioanalyzer");
-        mainMenu.setContentPane(new MainMenu().mainPanel);
+        MainMenu userInterface = new MainMenu(mainMenu);
+        /*        mainMenu.setContentPane(new MainMenu().mainPanel);
         mainMenu.setDefaultCloseOperation(mainMenu.EXIT_ON_CLOSE);
         mainMenu.pack();
-        mainMenu.setVisible(true);
+        mainMenu.setVisible(true);*/
     }
 }
