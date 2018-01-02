@@ -1,6 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,14 +13,19 @@ public class MainMenu {
     private JButton audiosegmentationButton;
     private JButton sBackButton;
     private JButton dBackButton;
+    private JButton sAnalyseButton;
+    private JButton sPlayButton;
+    private JButton sUploadButton;
+    private JLabel sBar;
+    private JLabel sName;
 
     public MainMenu(JFrame frame){
 
-        mainPanel.setPreferredSize(new Dimension(600, 400));
-        styleButtons();
+        //mainPanel.setPreferredSize(new Dimension(700, 400));
+        styleUi();
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new CardLayout(0, 0));
-        frame.setPreferredSize(new Dimension(600, 400));
+        frame.setPreferredSize(new Dimension(700, 400));
 
         frame.getContentPane().add(menu);
         frame.getContentPane().add(segmentationMenu);
@@ -60,11 +63,15 @@ public class MainMenu {
         });
     }
 
-    private void styleButtons() {
-        BtnStyle btnStyler = new BtnStyle();
-        btnStyler.styleMainMenuBtn(audiosegmentationButton);
-        btnStyler.styleMainMenuBtn(audiodiarizationButton);
-        btnStyler.styleBackBtn(sBackButton);
-        btnStyler.styleBackBtn(dBackButton);
+    private void styleUi() {
+        UiStyle uiStyler = new UiStyle();
+        uiStyler.styleMainMenuBtn(audiosegmentationButton);
+        uiStyler.styleMainMenuBtn(audiodiarizationButton);
+        uiStyler.styleBackBtn(sBackButton);
+        uiStyler.styleBackBtn(dBackButton);
+        uiStyler.styleAudioBtn(sAnalyseButton);
+        uiStyler.styleAudioBtn(sPlayButton);
+        uiStyler.styleAudioBtn(sUploadButton);
+        uiStyler.styleBar(sBar);
     }
 }
