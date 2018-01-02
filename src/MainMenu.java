@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -18,44 +17,54 @@ public class MainMenu {
     private JButton dBackButton;
 
     public MainMenu(JFrame frame){
-        mainPanel.setPreferredSize(new Dimension(600, 400));
-        styleButton(audiosegmentationButton);
-        styleButton(audiodiarizationButton);
 
-        frame.setContentPane(mainPanel);
+        mainPanel.setPreferredSize(new Dimension(600, 400));
+        styleButtons();
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(new CardLayout(0, 0));
+        frame.setPreferredSize(new Dimension(600, 400));
+
+        frame.getContentPane().add(menu);
+        frame.getContentPane().add(segmentationMenu);
+        frame.getContentPane().add(diarizationMenu);
         frame.pack();
         frame.setVisible(true);
 
         audiosegmentationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.setContentPane(segmentationMenu);
-                //frame.pack();
-                frame.setVisible(true);
+                menu.setVisible(false);
+                segmentationMenu.setVisible(true);
             }
         });
         audiodiarizationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.setContentPane(diarizationMenu);
-
+                menu.setVisible(false);
+                diarizationMenu.setVisible(true);
             }
         });
         sBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.setContentPane(menu);
+                segmentationMenu.setVisible(false);
+                menu.setVisible(true);
+            }
+        });
+        dBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                diarizationMenu.setVisible(false);
+                menu.setVisible(true);
             }
         });
     }
-    private void styleButton(JButton button) {
-        Border roundedBorder = new LineBorder(new Color(112, 48, 160), 4, true);
 
-        button.setBorder(roundedBorder);
-        button.setForeground(new Color(112, 48, 160));
-        button.setBackground(new Color(242,242,242));
-        button.setPreferredSize(new Dimension(500,150));
-        button.setFont(new Font("Arial", Font.BOLD, 30));
+    private void styleButtons() {
+        BtnStyle btnStyler = new BtnStyle();
+        btnStyler.styleMainMenuBtn(audiosegmentationButton);
+        btnStyler.styleMainMenuBtn(audiodiarizationButton);
+        btnStyler.styleBackBtn(sBackButton);
+        btnStyler.styleBackBtn(dBackButton);
     }
 }
