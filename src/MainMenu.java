@@ -18,6 +18,13 @@ public class MainMenu {
     private JButton sUploadButton;
     private JLabel sBar;
     private JLabel sName;
+    private JButton drecordButton;
+    private JButton dAnalyseButton;
+    private JButton dPlayButton;
+    private JButton dUploadButton;
+    private JLabel dBar;
+    private JButton dRecordButton;
+    private JLabel placeholder;
 
     public MainMenu(JFrame frame){
 
@@ -72,6 +79,10 @@ public class MainMenu {
         uiStyler.styleAudioBtn(sAnalyseButton);
         uiStyler.styleAudioBtn(sPlayButton);
         uiStyler.styleAudioBtn(sUploadButton);
+        uiStyler.styleAudioBtn(dRecordButton);
+        uiStyler.styleAudioBtn(dAnalyseButton);
+        uiStyler.styleAudioBtn(dUploadButton);
+        uiStyler.styleAudioBtn(dPlayButton);
         uiStyler.styleBar(sBar);
     }
 }
