@@ -15,16 +15,17 @@ public class MainMenu {
     private JButton dBackButton;
     private JButton sAnalyseButton;
     private JButton sPlayButton;
-    private JButton sUploadButton;
+    private JButton sOpenButton;
     private JLabel sBar;
     private JLabel sName;
     private JButton drecordButton;
     private JButton dAnalyseButton;
     private JButton dPlayButton;
-    private JButton dUploadButton;
-    private JLabel dBar;
+    private JButton dOpenButton;
     private JButton dRecordButton;
     private JLabel placeholder;
+    private JLabel dBar;
+    private JSpinner dSpinner;
 
     public MainMenu(JFrame frame){
 
@@ -78,11 +79,13 @@ public class MainMenu {
         uiStyler.styleBackBtn(dBackButton);
         uiStyler.styleAudioBtn(sAnalyseButton);
         uiStyler.styleAudioBtn(sPlayButton);
-        uiStyler.styleAudioBtn(sUploadButton);
+        uiStyler.styleAudioBtn(sOpenButton);
         uiStyler.styleAudioBtn(dRecordButton);
         uiStyler.styleAudioBtn(dAnalyseButton);
-        uiStyler.styleAudioBtn(dUploadButton);
+        uiStyler.styleAudioBtn(dOpenButton);
         uiStyler.styleAudioBtn(dPlayButton);
         uiStyler.styleBar(sBar);
+        uiStyler.styleBar(dBar);
+        uiStyler.styleSpinner(dSpinner);
     }
 }

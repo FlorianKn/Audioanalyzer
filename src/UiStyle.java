@@ -41,4 +41,9 @@ public class UiStyle {
         label.setFont(new Font("Arial", Font.ITALIC, 10));
         label.setPreferredSize(new Dimension(90,10));
     }
+    public void styleSpinner(JSpinner spinner) {
+        spinner.setModel(new SpinnerNumberModel(2, 2, 4, 1));
+        JFormattedTextField tf = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
+        tf.setEditable(false);
+    }
 }

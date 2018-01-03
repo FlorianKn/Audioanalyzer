@@ -15,9 +15,5 @@ public class MainActivity {
 
         JFrame mainMenu = new JFrame("Audioanalyzer");
         MainMenu userInterface = new MainMenu(mainMenu);
-        /*        mainMenu.setContentPane(new MainMenu().mainPanel);
-        mainMenu.setDefaultCloseOperation(mainMenu.EXIT_ON_CLOSE);
-        mainMenu.pack();
-        mainMenu.setVisible(true);*/
     }
 }
