@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class MainMenu {
     public JPanel mainPanel;
@@ -27,9 +28,10 @@ public class MainMenu {
     private JLabel dBar;
     private JSpinner dSpinner;
 
-    public MainMenu(JFrame frame){
+    // Path to wav file
+    private String path = null;
 
-        //mainPanel.setPreferredSize(new Dimension(700, 400));
+    public MainMenu(JFrame frame){
         styleUi();
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new CardLayout(0, 0));
@@ -67,6 +69,20 @@ public class MainMenu {
             public void actionPerformed(ActionEvent e) {
                 diarizationMenu.setVisible(false);
                 menu.setVisible(true);
+            }
+        });
+        dOpenButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FileChooser f = new FileChooser();
+                path = f.openWav();
+            }
+        });
+        sOpenButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FileChooser f = new FileChooser();
+                path = f.openWav();
             }
         });
     }
