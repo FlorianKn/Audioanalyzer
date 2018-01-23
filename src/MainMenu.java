@@ -76,6 +76,7 @@ public class MainMenu {
             public void actionPerformed(ActionEvent e) {
                 FileChooser f = new FileChooser();
                 path = f.openWav();
+                dBar.setText(path);
             }
         });
         sOpenButton.addActionListener(new ActionListener() {
@@ -83,6 +84,7 @@ public class MainMenu {
             public void actionPerformed(ActionEvent e) {
                 FileChooser f = new FileChooser();
                 path = f.openWav();
+                sBar.setText(path);
             }
         });
     }
