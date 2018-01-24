@@ -6,9 +6,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
+//import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
 
-public class MainMenu  implements KeyListener {
+public class MainMenu extends JFrame implements KeyListener {
     public JPanel mainPanel;
     public JPanel segmentationMenu;
     public JPanel diarizationMenu;
@@ -36,9 +36,11 @@ public class MainMenu  implements KeyListener {
     // Path to wav file
     private String path = null;
 
-    public MainMenu(JFrame frame){
+    public MainMenu(){
+        JFrame frame = new JFrame();
+
+        frame.setVisible(true);
         styleUi();
-        addKeyListener(this);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new CardLayout(0, 0));
         frame.setPreferredSize(new Dimension(700, 400));
@@ -46,8 +48,10 @@ public class MainMenu  implements KeyListener {
         frame.getContentPane().add(menu);
         frame.getContentPane().add(segmentationMenu);
         frame.getContentPane().add(diarizationMenu);
+
+
+
         frame.pack();
-        frame.setVisible(true);
 
         audiosegmentationButton.addActionListener(new ActionListener() {
             @Override
@@ -93,14 +97,22 @@ public class MainMenu  implements KeyListener {
                 sBar.setText(path);
             }
         });
+
         sPlayButton.addActionListener(new ActionListener() {
+            boolean pause = false;
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(path != null) {
-
+                if(path != null && pause == false) {
+                    pause = true;
                     w.playSound(path);
-                } else {
+                    sPlayButton.setText("Pause");
+                } else if (pause) {
+                    w.stopPlayer();
+                    sPlayButton.setText("Play");
+                    pause = false;
+                }
+                else {
                     JOptionPane.showMessageDialog(frame,
                             "Please choose a wav file first.",
                             "Error",
@@ -109,13 +121,20 @@ public class MainMenu  implements KeyListener {
             }
         });
         dPlayButton.addActionListener(new ActionListener() {
+            boolean pause = false;
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(path != null) {
-
+                if(path != null && pause == false) {
+                    pause = true;
                     w.playSound(path);
-                } else {
+                    dPlayButton.setText("Pause");
+                } else if (pause) {
+                    w.stopPlayer();
+                    dPlayButton.setText("Play");
+                    pause = false;
+                }
+                else {
                     JOptionPane.showMessageDialog(frame,
                             "Please choose a wav file first.",
                             "Error",
@@ -145,6 +164,10 @@ public class MainMenu  implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_UP) {
@@ -153,12 +176,6 @@ public class MainMenu  implements KeyListener {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
     public void keyReleased(KeyEvent e) {
-
     }
 }
