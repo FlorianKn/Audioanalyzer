@@ -2,13 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.File;
 
-//import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
-
-public class MainMenu extends JFrame implements KeyListener {
+public class MainMenu   {
     public JPanel mainPanel;
     public JPanel segmentationMenu;
     public JPanel diarizationMenu;
@@ -32,13 +27,11 @@ public class MainMenu extends JFrame implements KeyListener {
     private JLabel dBar;
     private JSpinner dSpinner;
     private WavPlayer w = new WavPlayer();
-
     // Path to wav file
     private String path = null;
 
     public MainMenu(){
-        JFrame frame = new JFrame();
-
+        JFrame frame = new JFrame("Audioanalyzer");
         frame.setVisible(true);
         styleUi();
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
@@ -48,9 +41,6 @@ public class MainMenu extends JFrame implements KeyListener {
         frame.getContentPane().add(menu);
         frame.getContentPane().add(segmentationMenu);
         frame.getContentPane().add(diarizationMenu);
-
-
-
         frame.pack();
 
         audiosegmentationButton.addActionListener(new ActionListener() {
@@ -87,6 +77,7 @@ public class MainMenu extends JFrame implements KeyListener {
                 FileChooser f = new FileChooser();
                 path = f.openWav();
                 dBar.setText(path);
+                sBar.setText(path);
             }
         });
         sOpenButton.addActionListener(new ActionListener() {
@@ -95,6 +86,7 @@ public class MainMenu extends JFrame implements KeyListener {
                 FileChooser f = new FileChooser();
                 path = f.openWav();
                 sBar.setText(path);
+                dBar.setText(path);
             }
         });
 
@@ -160,22 +152,5 @@ public class MainMenu extends JFrame implements KeyListener {
         uiStyler.styleBar(sBar);
         uiStyler.styleBar(dBar);
         uiStyler.styleSpinner(dSpinner);
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_UP) {
-            w.stopPlayer();
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
     }
 }
