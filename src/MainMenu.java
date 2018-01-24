@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class MainMenu   {
     public JPanel mainPanel;
@@ -131,6 +132,30 @@ public class MainMenu   {
                             "Please choose a wav file first.",
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        dRecordButton.addActionListener(new ActionListener() {
+            boolean run = true;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final SoundRecorder recorder = new SoundRecorder();
+
+                if(run) {
+                    FileChooser f = new FileChooser();
+                    String path;
+
+                    path = f.saveWav();
+                    run = false;
+                    dRecordButton.setText("Finish");
+                    recorder.startRecording(path);
+
+                } else {
+                    recorder.finish();
+                    dRecordButton.setText("Record");
+                    run = true;
+
                 }
             }
         });

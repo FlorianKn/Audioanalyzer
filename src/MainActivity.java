@@ -16,6 +16,7 @@ public class MainActivity {
         //DiarizationInterpreter a = new DiarizationInterpreter("pyAudioAnalysis/diarizationLog.txt");
 
         MainMenu userInterface = new MainMenu();
+
     }
 
 }
