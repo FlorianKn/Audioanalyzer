@@ -2,9 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 
-public class MainMenu {
+import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
+
+public class MainMenu  implements KeyListener {
     public JPanel mainPanel;
     public JPanel segmentationMenu;
     public JPanel diarizationMenu;
@@ -27,12 +31,14 @@ public class MainMenu {
     private JLabel placeholder;
     private JLabel dBar;
     private JSpinner dSpinner;
+    private WavPlayer w = new WavPlayer();
 
     // Path to wav file
     private String path = null;
 
     public MainMenu(JFrame frame){
         styleUi();
+        addKeyListener(this);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new CardLayout(0, 0));
         frame.setPreferredSize(new Dimension(700, 400));
@@ -87,6 +93,36 @@ public class MainMenu {
                 sBar.setText(path);
             }
         });
+        sPlayButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(path != null) {
+
+                    w.playSound(path);
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                            "Please choose a wav file first.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        dPlayButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(path != null) {
+
+                    w.playSound(path);
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                            "Please choose a wav file first.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
     }
 
     private void styleUi() {
@@ -105,5 +141,24 @@ public class MainMenu {
         uiStyler.styleBar(sBar);
         uiStyler.styleBar(dBar);
         uiStyler.styleSpinner(dSpinner);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        int key = e.getKeyCode();
+
+        if (key == KeyEvent.VK_UP) {
+            w.stopPlayer();
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }

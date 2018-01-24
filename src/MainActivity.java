@@ -1,5 +1,10 @@
 import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.security.Key;
 import java.util.ArrayList;
+
+
 
 public class MainActivity {
     static final String CMD_DIA = "powershell.exe C:\\Users\\Florian\\IdeaProjects\\Audioanalyzer\\pyAudioAnalysis\\diarizationScript.ps1";
@@ -16,4 +21,5 @@ public class MainActivity {
         JFrame mainMenu = new JFrame("Audioanalyzer");
         MainMenu userInterface = new MainMenu(mainMenu);
     }
+
 }
