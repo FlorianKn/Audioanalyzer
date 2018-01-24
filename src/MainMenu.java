@@ -2,9 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
-public class MainMenu {
+public class MainMenu   {
     public JPanel mainPanel;
     public JPanel segmentationMenu;
     public JPanel diarizationMenu;
@@ -27,11 +26,13 @@ public class MainMenu {
     private JLabel placeholder;
     private JLabel dBar;
     private JSpinner dSpinner;
-
+    private WavPlayer w = new WavPlayer();
     // Path to wav file
     private String path = null;
 
-    public MainMenu(JFrame frame){
+    public MainMenu(){
+        JFrame frame = new JFrame("Audioanalyzer");
+        frame.setVisible(true);
         styleUi();
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new CardLayout(0, 0));
@@ -41,7 +42,6 @@ public class MainMenu {
         frame.getContentPane().add(segmentationMenu);
         frame.getContentPane().add(diarizationMenu);
         frame.pack();
-        frame.setVisible(true);
 
         audiosegmentationButton.addActionListener(new ActionListener() {
             @Override
@@ -77,6 +77,7 @@ public class MainMenu {
                 FileChooser f = new FileChooser();
                 path = f.openWav();
                 dBar.setText(path);
+                sBar.setText(path);
             }
         });
         sOpenButton.addActionListener(new ActionListener() {
@@ -85,6 +86,52 @@ public class MainMenu {
                 FileChooser f = new FileChooser();
                 path = f.openWav();
                 sBar.setText(path);
+                dBar.setText(path);
+            }
+        });
+
+        sPlayButton.addActionListener(new ActionListener() {
+            boolean pause = false;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(path != null && pause == false) {
+                    pause = true;
+                    w.playSound(path);
+                    sPlayButton.setText("Pause");
+                } else if (pause) {
+                    w.stopPlayer();
+                    sPlayButton.setText("Play");
+                    pause = false;
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame,
+                            "Please choose a wav file first.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        dPlayButton.addActionListener(new ActionListener() {
+            boolean pause = false;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(path != null && pause == false) {
+                    pause = true;
+                    w.playSound(path);
+                    dPlayButton.setText("Pause");
+                } else if (pause) {
+                    w.stopPlayer();
+                    dPlayButton.setText("Play");
+                    pause = false;
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame,
+                            "Please choose a wav file first.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }
