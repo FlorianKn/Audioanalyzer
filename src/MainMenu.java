@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 public class MainMenu   {
     public JPanel mainPanel;
@@ -51,6 +50,7 @@ public class MainMenu   {
                 segmentationMenu.setVisible(true);
             }
         });
+
         audiodiarizationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -58,6 +58,7 @@ public class MainMenu   {
                 diarizationMenu.setVisible(true);
             }
         });
+
         sBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -65,6 +66,7 @@ public class MainMenu   {
                 menu.setVisible(true);
             }
         });
+
         dBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -72,6 +74,7 @@ public class MainMenu   {
                 menu.setVisible(true);
             }
         });
+
         dOpenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -81,6 +84,7 @@ public class MainMenu   {
                 sBar.setText(path);
             }
         });
+
         sOpenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -113,6 +117,7 @@ public class MainMenu   {
                 }
             }
         });
+
         dPlayButton.addActionListener(new ActionListener() {
             boolean pause = false;
             @Override
@@ -150,12 +155,10 @@ public class MainMenu   {
                     run = false;
                     dRecordButton.setText("Finish");
                     recorder.startRecording(path);
-
                 } else {
                     recorder.finish();
                     dRecordButton.setText("Record");
                     run = true;
-
                 }
             }
         });

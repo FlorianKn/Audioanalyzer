@@ -41,15 +41,9 @@ public class SoundRecorder {
                   line.open(format);
                   line.start();   // start capturing
 
-                  System.out.println("Start capturing...");
-
                   AudioInputStream ais = new AudioInputStream(line);
-
-                  System.out.println("Start recording...");
-
                   // start recording
                   AudioSystem.write(ais, fileType, wavFile);
-
 
               } catch (LineUnavailableException ex) {
                   ex.printStackTrace();
@@ -60,13 +54,9 @@ public class SoundRecorder {
       }).start();
 
     }
-    /**
-     * Closes the target data line to finish capturing and recording
-     */
+
     void finish() {
         line.stop();
         line.close();
-        System.out.println("Finished");
     }
-
 }
