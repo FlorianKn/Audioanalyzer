@@ -50,6 +50,7 @@ public class MainMenu   {
                 segmentationMenu.setVisible(true);
             }
         });
+
         audiodiarizationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -57,6 +58,7 @@ public class MainMenu   {
                 diarizationMenu.setVisible(true);
             }
         });
+
         sBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,6 +66,7 @@ public class MainMenu   {
                 menu.setVisible(true);
             }
         });
+
         dBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,6 +74,7 @@ public class MainMenu   {
                 menu.setVisible(true);
             }
         });
+
         dOpenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -80,6 +84,7 @@ public class MainMenu   {
                 sBar.setText(path);
             }
         });
+
         sOpenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -112,6 +117,7 @@ public class MainMenu   {
                 }
             }
         });
+
         dPlayButton.addActionListener(new ActionListener() {
             boolean pause = false;
             @Override
@@ -131,6 +137,28 @@ public class MainMenu   {
                             "Please choose a wav file first.",
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        dRecordButton.addActionListener(new ActionListener() {
+            boolean run = true;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final SoundRecorder recorder = new SoundRecorder();
+
+                if(run) {
+                    FileChooser f = new FileChooser();
+                    String path;
+
+                    path = f.saveWav();
+                    run = false;
+                    dRecordButton.setText("Finish");
+                    recorder.startRecording(path);
+                } else {
+                    recorder.finish();
+                    dRecordButton.setText("Record");
+                    run = true;
                 }
             }
         });
