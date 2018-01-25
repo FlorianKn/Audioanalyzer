@@ -39,5 +39,5 @@ public abstract class Interpreter {
         return  jsonObject;
     }
 
-    abstract void createChart();
+    protected abstract void createChart(Interpreter interpreter);
 }

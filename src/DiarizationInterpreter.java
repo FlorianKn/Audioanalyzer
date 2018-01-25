@@ -23,8 +23,7 @@ public class DiarizationInterpreter extends Interpreter {
     }
 
     @Override
-    void createChart() {
+    protected void createChart(Interpreter interpreter) {
 
     }
-
 }

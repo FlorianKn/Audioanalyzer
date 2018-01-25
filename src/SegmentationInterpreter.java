@@ -1,5 +1,9 @@
 import org.json.simple.JSONObject;
 
+import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 public class SegmentationInterpreter extends Interpreter {
@@ -28,8 +32,15 @@ public class SegmentationInterpreter extends Interpreter {
         return music;
     }
 
-    @Override
-    void createChart() {
 
+    @Override
+    protected void createChart(Interpreter interpreter) {
+        Chart r = new Chart();
+        JFrame frame = new JFrame("MyFrame");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(r);
+        frame.setSize(360, 300);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }
