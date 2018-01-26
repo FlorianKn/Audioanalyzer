@@ -1,16 +1,54 @@
-import java.awt.*;
-import javax.swing.JPanel;
+import java.util.ArrayList;
 
-public class Chart extends JPanel {
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.ApplicationFrame;
 
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
+public class Chart extends ApplicationFrame {
 
-        g2d.setColor(new Color(212,212,2));
-        g2d.drawRect(10,15,90,60);
+    public Chart(String title, SegmentationInterpreter interpreter) {
+        super(title);
 
-        g2d.setColor(new Color(31,21,1));
-        g2d.fillRect(250,195,90,60);
+        final XYSeries series = new XYSeries("Music(1) Speech (2)");
+
+        double startValue = 0;
+
+        for(int i = 0; i < interpreter.label.size(); i++) {
+            String label = interpreter.getLabel().get(i);
+            double currentValue = interpreter.getSegmentStart().get(i);
+
+            if (label.contains("music")) {
+
+                series.add(startValue, 1);
+                series.add(currentValue, 1);
+                startValue = currentValue;
+            } else {
+
+                series.add(startValue, 2);
+                series.add(currentValue, 2);
+                startValue = currentValue;
+            }
+
+        }
+
+        final XYSeriesCollection data = new XYSeriesCollection(series);
+
+        final JFreeChart chart = ChartFactory.createXYLineChart(
+                "Audiosegmentation",
+                "Seconds",
+                "Music/Speech",
+                data,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
+        );
+        final ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+        setContentPane(chartPanel);
     }
 }

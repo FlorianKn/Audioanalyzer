@@ -9,14 +9,14 @@ import java.util.ArrayList;
 public abstract class Interpreter {
 
     protected long duration;
-    protected ArrayList<String> segmentStart;
+    protected ArrayList<Double> segmentStart;
     protected ArrayList<String> label;
 
     public long getDuration() {
         return duration;
     }
 
-    public ArrayList<String> getSegmentStart() {
+    public ArrayList<Double> getSegmentStart() {
         return segmentStart;
     }
 
@@ -27,6 +27,7 @@ public abstract class Interpreter {
     JSONObject readJsonFile(String path) {
         JSONParser parser = new JSONParser();
         Object obj = null;
+
         try {
             obj = parser.parse(new FileReader(path));
         } catch (IOException e) {
@@ -38,6 +39,4 @@ public abstract class Interpreter {
 
         return  jsonObject;
     }
-
-    protected abstract void createChart(Interpreter interpreter);
 }
