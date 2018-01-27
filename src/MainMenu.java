@@ -1,13 +1,19 @@
 import javax.swing.*;
+import javax.swing.text.Segment;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class MainMenu   {
     public JPanel mainPanel;
     public JPanel segmentationMenu;
     public JPanel diarizationMenu;
     public JPanel menu;
+
+    static final String CMD_DIA = "powershell.exe C:\\Users\\Florian\\IdeaProjects\\Audioanalyzer\\pyAudioAnalysis\\diarizationScript.ps1";
+    static final String CMD_SEG= "powershell.exe C:\\Users\\Florian\\IdeaProjects\\Audioanalyzer\\pyAudioAnalysis\\segmentationScript.ps1";
+
 
     private JButton audiodiarizationButton;
     private JButton audiosegmentationButton;
@@ -18,7 +24,6 @@ public class MainMenu   {
     private JButton sOpenButton;
     private JLabel sBar;
     private JLabel sName;
-    private JButton drecordButton;
     private JButton dAnalyseButton;
     private JButton dPlayButton;
     private JButton dOpenButton;
@@ -34,6 +39,7 @@ public class MainMenu   {
         JFrame frame = new JFrame("Audioanalyzer");
         frame.setVisible(true);
         styleUi();
+
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new CardLayout(0, 0));
         frame.setPreferredSize(new Dimension(700, 400));
@@ -110,10 +116,8 @@ public class MainMenu   {
                     pause = false;
                 }
                 else {
-                    JOptionPane.showMessageDialog(frame,
-                            "Please choose a wav file first.",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
+                    UiStyle errorMsg = new UiStyle();
+                    errorMsg.displayErrorMessage(frame);
                 }
             }
         });
@@ -133,10 +137,8 @@ public class MainMenu   {
                     pause = false;
                 }
                 else {
-                    JOptionPane.showMessageDialog(frame,
-                            "Please choose a wav file first.",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
+                    UiStyle errorMsg = new UiStyle();
+                    errorMsg.displayErrorMessage(frame);
                 }
             }
         });
@@ -159,6 +161,23 @@ public class MainMenu   {
                     recorder.finish();
                     dRecordButton.setText("Record");
                     run = true;
+                }
+            }
+        });
+
+        sAnalyseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(path != null) {
+                    PythonBridge bridge = new PythonBridge();
+
+                    ArrayList<String> commandLineInput = bridge.executePython(CMD_SEG);
+                    SegmentationInterpreter segInterpreter = new SegmentationInterpreter("pyAudioAnalysis/segmentationLog.txt");
+                    segInterpreter.createChart(segInterpreter);
+                } else {
+                    UiStyle errorMsg = new UiStyle();
+                    errorMsg.displayErrorMessage(frame);
                 }
             }
         });

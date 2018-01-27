@@ -27,7 +27,6 @@ public class Chart extends ApplicationFrame {
                 series.add(currentValue, 1);
                 startValue = currentValue;
             } else {
-
                 series.add(startValue, 2);
                 series.add(currentValue, 2);
                 startValue = currentValue;
