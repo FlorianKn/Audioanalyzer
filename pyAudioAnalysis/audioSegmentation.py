@@ -22,7 +22,6 @@ import json
 
 """ General utility functions """
 
-
 def smoothMovingAvg(inputSignal, windowLen=11):
     windowLen = int(windowLen)
     if inputSignal.ndim != 1:
@@ -201,16 +200,16 @@ def plotSegmentationResults(flagsInd, flagsIndGT, classNames, mtStep, ONLY_EVALU
         font = {'size': 10}
         plt.rc('font', **font)
 
+        global speechPerc
+        speechPerc = Percentages[0][0]
+        global musicPer
+        musicPer = Percentages[1][0]
 
-
-        print "IdentSPEECH"
-        print Percentages[0][0]
-        print "IdentSEND"
-        print Percentages[1]
-        print "IdentMEND"
+        relevantSegments = [row[1] for row in segs]
 
         with open('segmentationLog.txt', 'w') as outFile:
-            json.dump({'Segmentation':{'duration': gDuration, 'segments': gSegEndGT.tolist(), 'label': gSegLabelsGT, 'speech': Percentages[0][0], 'music': Percentages[1][0] }}, outFile, indent=3)
+            json.dump({'Segmentation':{'duration': Duration, 'segments': relevantSegments, 'label': classes, 'speech': speechPerc, 'music': musicPer }}, outFile, indent=3)
+
 
         fig = plt.figure()
         ax1 = fig.add_subplot(211)
@@ -538,22 +537,9 @@ def mtFileClassification(inputFile, modelName, modelType, plotResults=False, gtF
     segs[-1] = len(x) / float(Fs)
 
     # Load grount-truth:
+    #if os.path.isfile(gtFile):
     if os.path.isfile(gtFile):
         [segStartGT, segEndGT, segLabelsGT] = readSegmentGT(gtFile)
-
-
-        global gDuration
-        global gSegEndGT
-        global gSegLabelsGT
-
-        gDuration = Duration
-        gSegEndGT = segEndGT
-        gSegLabelsGT = segLabelsGT
-
-
-        print 'IdentDUR'
-        print Duration
-        print 'IdentSTART'
 
         for seg in segEndGT:
             print seg
@@ -561,13 +547,6 @@ def mtFileClassification(inputFile, modelName, modelType, plotResults=False, gtF
         for seg in segLabelsGT:
             print seg
         print 'IdentMUSIC'
-        #with open('segmentationLog.txt', 'w') as outFile:
-            #json.dump({'Segmentation':{'duration': Duration, 'segments': segEndGT.tolist(), 'label': segLabelsGT, 'speech': percentageSpeech, 'music': percentageMusic }}, outFile, indent=3)
-        # s = open('segmentationLog.txt', 'w')
-        # s.write(str(Duration) + "\n")
-        # s.write(str(segEndGT) + "\n")
-        # s.write(str(segLabelsGT) + "\n")
-        # s.close()
 
         flagsGT, classNamesGT = segs2flags(segStartGT, segEndGT, segLabelsGT, mtStep)
         flagsIndGT = []
@@ -584,6 +563,19 @@ def mtFileClassification(inputFile, modelName, modelType, plotResults=False, gtF
         CM = []
         flagsIndGT = numpy.array([])
     acc = plotSegmentationResults(flagsInd, flagsIndGT, classNames, mtStep, not plotResults)
+
+    # global gDuration
+    # global gSegEndGT
+    # global gSegLabelsGT
+    #
+    #
+    # gDuration = Duration
+    # gSegEndGT = segEndGT
+    # gSegLabelsGT = segLabelsGT
+    #
+    # with open('segmentationLog.txt', 'w') as outFile:
+    #     json.dump({'Segmentation':{'duration': gDuration, 'segments': gSegEndGT.tolist(), 'label': gSegLabelsGT, 'speech': speechPerc, 'music': musicPer }}, outFile, indent=3)
+
     if acc >= 0:
         print "Overall Accuracy: {0:.3f}".format(acc)
         return (flagsInd, classNamesGT, acc, CM)

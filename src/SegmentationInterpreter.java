@@ -17,7 +17,7 @@ public class SegmentationInterpreter extends Interpreter {
         jsonObject = readJsonFile(path);
         segmentationObject = (JSONObject) jsonObject.get("Segmentation");
 
-        this.duration = (long) segmentationObject.get("duration");
+        this.duration = (double) segmentationObject.get("duration");
         this.segmentStart = (ArrayList<Double>) segmentationObject.get("segments");
         this.label = (ArrayList<String>) segmentationObject.get("label");
         this.speech = (double) segmentationObject.get("speech");

@@ -11,9 +11,8 @@ public class MainMenu   {
     public JPanel diarizationMenu;
     public JPanel menu;
 
-    static final String CMD_DIA = "powershell.exe C:\\Users\\Florian\\IdeaProjects\\Audioanalyzer\\pyAudioAnalysis\\diarizationScript.ps1";
-    static final String CMD_SEG= "powershell.exe C:\\Users\\Florian\\IdeaProjects\\Audioanalyzer\\pyAudioAnalysis\\segmentationScript.ps1";
-
+    static final String CMD_DIA = "powershell.exe pyAudioAnalysis\\diarizationScript.ps1";
+    String CMD_SEG = "cmd /c powershell -File pyAudioAnalysis\\segmentationScript.ps1 -wavFile ";
 
     private JButton audiodiarizationButton;
     private JButton audiosegmentationButton;
@@ -172,7 +171,7 @@ public class MainMenu   {
                 if(path != null) {
                     PythonBridge bridge = new PythonBridge();
 
-                    ArrayList<String> commandLineInput = bridge.executePython(CMD_SEG);
+                    ArrayList<String> commandLineInput = bridge.executePython(CMD_SEG + path);
                     SegmentationInterpreter segInterpreter = new SegmentationInterpreter("pyAudioAnalysis/segmentationLog.txt");
                     segInterpreter.createChart(segInterpreter);
                 } else {

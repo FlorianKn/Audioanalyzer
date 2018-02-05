@@ -8,11 +8,11 @@ import java.util.ArrayList;
 
 public abstract class Interpreter {
 
-    protected long duration;
+    protected double duration;
     protected ArrayList<Double> segmentStart;
     protected ArrayList<String> label;
 
-    public long getDuration() {
+    public double getDuration() {
         return duration;
     }
 
