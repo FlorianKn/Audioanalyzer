@@ -1,9 +1,6 @@
 import org.json.simple.JSONObject;
 
 import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 public class SegmentationInterpreter extends Interpreter {
@@ -33,9 +30,7 @@ public class SegmentationInterpreter extends Interpreter {
     }
 
     protected void createChart(SegmentationInterpreter interpreter) {
-        Chart r = new Chart("Segmentation", interpreter);
-        r.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        //r.pack();
-        //r.setVisible(true);
+        SegmentationChart chart = new SegmentationChart("Segmentation", interpreter);
+        chart.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 }

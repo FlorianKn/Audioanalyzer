@@ -179,6 +179,23 @@ public class MainMenu   {
                 }
             }
         });
+
+        dAnalyseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(path != null) {
+                    //PythonBridge bridge = new PythonBridge();
+
+                    //ArrayList<String> commandLineInput = bridge.executePython(CMD_SEG + path);
+                    DiarizationInterpreter diaInterpreter = new DiarizationInterpreter("pyAudioAnalysis/diarizationLog.txt");
+                    diaInterpreter.createChart(diaInterpreter);
+                } else {
+                    UiStyle errorMsg = new UiStyle();
+                    errorMsg.displayErrorMessage(frame);
+                }
+            }
+        });
     }
 
     private void styleUi() {

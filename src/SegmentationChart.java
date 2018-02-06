@@ -5,13 +5,12 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
-
 import javax.swing.*;
 import java.awt.*;
 
-public class Chart extends ApplicationFrame {
+public class SegmentationChart extends ApplicationFrame {
 
-    public Chart(String title, SegmentationInterpreter interpreter) {
+    public SegmentationChart(String title, SegmentationInterpreter interpreter) {
         super(title);
 
         final XYSeries series = new XYSeries("Music(1) Speech (2)");
