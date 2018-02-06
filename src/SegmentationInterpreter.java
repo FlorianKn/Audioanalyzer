@@ -34,7 +34,8 @@ public class SegmentationInterpreter extends Interpreter {
 
     protected void createChart(SegmentationInterpreter interpreter) {
         Chart r = new Chart("Segmentation", interpreter);
-        r.pack();
-        r.setVisible(true);
+        r.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //r.pack();
+        //r.setVisible(true);
     }
 }

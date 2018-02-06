@@ -9,7 +9,6 @@ public class MainActivity {
         //PythonBridge bridge = new PythonBridge();
 
         //ArrayList<String> commandLineInput = bridge.executePython(CMD_SEG);
-        //SegmentationInterpreter d = new SegmentationInterpreter("pyAudioAnalysis/segmentationLog.txt");
         //DiarizationInterpreter a = new DiarizationInterpreter("pyAudioAnalysis/diarizationLog.txt");
 
         MainMenu userInterface = new MainMenu();
