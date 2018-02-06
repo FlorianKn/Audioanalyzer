@@ -1,5 +1,9 @@
 import org.json.simple.JSONObject;
 
+import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 public class SegmentationInterpreter extends Interpreter {
@@ -13,8 +17,8 @@ public class SegmentationInterpreter extends Interpreter {
         jsonObject = readJsonFile(path);
         segmentationObject = (JSONObject) jsonObject.get("Segmentation");
 
-        this.duration = (long) segmentationObject.get("duration");
-        this.segmentStart = (ArrayList<String>) segmentationObject.get("segments");
+        this.duration = (double) segmentationObject.get("duration");
+        this.segmentStart = (ArrayList<Double>) segmentationObject.get("segments");
         this.label = (ArrayList<String>) segmentationObject.get("label");
         this.speech = (double) segmentationObject.get("speech");
         this.music = (double) segmentationObject.get("music");
@@ -28,8 +32,10 @@ public class SegmentationInterpreter extends Interpreter {
         return music;
     }
 
-    @Override
-    void createChart() {
-
+    protected void createChart(SegmentationInterpreter interpreter) {
+        Chart r = new Chart("Segmentation", interpreter);
+        r.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //r.pack();
+        //r.setVisible(true);
     }
 }

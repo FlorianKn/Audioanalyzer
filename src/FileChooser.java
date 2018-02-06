@@ -8,6 +8,7 @@ public class FileChooser {
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "WAV files", "wav");
         chooser.setFileFilter(filter);
+
         int returnVal = chooser.showOpenDialog(null);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             String path;

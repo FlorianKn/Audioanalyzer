@@ -12,8 +12,8 @@ public class DiarizationInterpreter extends Interpreter {
         jsonObject = readJsonFile(path);
         diarizationObject = (JSONObject) jsonObject.get("Diarization");
 
-        this.duration = (long) diarizationObject.get("duration");
-        this.segmentStart = (ArrayList<String>) diarizationObject.get("segmentStart");
+        this.duration = (double) diarizationObject.get("duration");
+        this.segmentStart = (ArrayList<Double>) diarizationObject.get("segmentStart");
         this.label = (ArrayList<String>) diarizationObject.get("label");
         this.segmentEnd = (ArrayList<String>) diarizationObject.get("segmentEnd");
     }
@@ -22,9 +22,7 @@ public class DiarizationInterpreter extends Interpreter {
         return segmentEnd;
     }
 
-    @Override
-    void createChart() {
+    protected void createChart(Interpreter interpreter) {
 
     }
-
 }
