@@ -78,12 +78,11 @@ public class DiarizationChart extends ApplicationFrame {
 
         for(int i = 0; i < keyList.size(); i++) {
             map.mapKeyToGroup(keyList.get(i), "G1");
-            System.out.println(keyList.get(i));
         }
 
         renderer.setSeriesToGroupMap(map);
-
         renderer.setItemMargin(0.0);
+
         Paint p1 = new GradientPaint(
                 0.0f, 0.0f, new Color(0x22, 0x22, 0xFF), 0.0f, 0.0f, new Color(0x88, 0x88, 0xFF)
         );
@@ -125,8 +124,8 @@ public class DiarizationChart extends ApplicationFrame {
         plot.setDomainAxis(domainAxis);
         plot.setRenderer(renderer);
         plot.setFixedLegendItems(createLegendItems());
-        return chart;
 
+        return chart;
     }
     private LegendItemCollection createLegendItems() {
         LegendItemCollection result = new LegendItemCollection();
@@ -140,6 +139,7 @@ public class DiarizationChart extends ApplicationFrame {
         result.add(item2);
         result.add(item3);
         result.add(item4);
+
         return result;
     }
 }
