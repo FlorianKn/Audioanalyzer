@@ -10,7 +10,7 @@ public class MainMenu   {
     public JPanel diarizationMenu;
     public JPanel menu;
 
-    static final String CMD_DIA = "powershell.exe pyAudioAnalysis\\diarizationScript.ps1";
+    static final String CMD_DIA = "powershell.exe pyAudioAnalysis\\diarizationScript.ps1 -wavFile ";
     String CMD_SEG = "cmd /c powershell -File pyAudioAnalysis\\segmentationScript.ps1 -wavFile ";
 
     private JButton audiodiarizationButton;
@@ -173,6 +173,24 @@ public class MainMenu   {
                     ArrayList<String> commandLineInput = bridge.executePython(CMD_SEG + path);
                     SegmentationInterpreter segInterpreter = new SegmentationInterpreter("pyAudioAnalysis/segmentationLog.txt");
                     segInterpreter.createChart(segInterpreter);
+                } else {
+                    UiStyle errorMsg = new UiStyle();
+                    errorMsg.displayErrorMessage(frame);
+                }
+            }
+        });
+
+        dAnalyseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(path != null) {
+                    PythonBridge bridge = new PythonBridge();
+                    String speaker = dSpinner.getValue().toString();
+
+                    ArrayList<String> commandLineInput = bridge.executePython(CMD_DIA + path + " -speaker " + speaker);
+                    DiarizationInterpreter diaInterpreter = new DiarizationInterpreter("pyAudioAnalysis/diarizationLog.txt");
+                    diaInterpreter.createChart(diaInterpreter);
                 } else {
                     UiStyle errorMsg = new UiStyle();
                     errorMsg.displayErrorMessage(frame);

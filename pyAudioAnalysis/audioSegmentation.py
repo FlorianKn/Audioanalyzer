@@ -106,6 +106,7 @@ def segs2flags(segStart, segEnd, segLabel, winSize):
      - flags:    numpy array of class indices
      - classNames:    list of classnames (strings)
     '''
+
     flags = []
     classNames = list(set(segLabel))
     curPos = winSize / 2.0
@@ -147,6 +148,7 @@ def readSegmentGT(gtFile):
      - segEnd:       a numpy array of segments' ending positions
      - segLabel:     a list of respective class labels (strings)
     '''
+
     f = open(gtFile, "rb")
     reader = csv.reader(f, delimiter=',')
     segStart = []
@@ -169,6 +171,7 @@ def plotSegmentationResults(flagsInd, flagsIndGT, classNames, mtStep, ONLY_EVALU
     This function plots statistics on the classification-segmentation results produced either by the fix-sized supervised method or the HMM method.
     It also computes the overall accuracy achieved by the respective method if ground-truth is available.
     '''
+
     flags = [classNames[int(f)] for f in flagsInd]
     (segs, classes) = flags2segs(flags, mtStep)
     minLength = min(flagsInd.shape[0], flagsIndGT.shape[0])
@@ -564,18 +567,6 @@ def mtFileClassification(inputFile, modelName, modelType, plotResults=False, gtF
         flagsIndGT = numpy.array([])
     acc = plotSegmentationResults(flagsInd, flagsIndGT, classNames, mtStep, not plotResults)
 
-    # global gDuration
-    # global gSegEndGT
-    # global gSegLabelsGT
-    #
-    #
-    # gDuration = Duration
-    # gSegEndGT = segEndGT
-    # gSegLabelsGT = segLabelsGT
-    #
-    # with open('segmentationLog.txt', 'w') as outFile:
-    #     json.dump({'Segmentation':{'duration': gDuration, 'segments': gSegEndGT.tolist(), 'label': gSegLabelsGT, 'speech': speechPerc, 'music': musicPer }}, outFile, indent=3)
-
     if acc >= 0:
         print "Overall Accuracy: {0:.3f}".format(acc)
         return (flagsInd, classNamesGT, acc, CM)
@@ -747,6 +738,7 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
         MidTermFeatures2[MidTermFeatures.shape[0]:MidTermFeatures.shape[0]+len(classNames1), i] = P1 + 0.0001
         MidTermFeatures2[MidTermFeatures.shape[0] + len(classNames1)::, i] = P2 + 0.0001
 
+
     MidTermFeatures = MidTermFeatures2    # TODO
     # SELECT FEATURES:
     #iFeaturesSelect = [8,9,10,11,12,13,14,15,16,17,18,19,20];                                                                                         # SET 0A
@@ -775,6 +767,7 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
     DistancesAll = numpy.sum(distance.squareform(distance.pdist(MidTermFeaturesNorm.T)), axis=0)
     MDistancesAll = numpy.mean(DistancesAll)
     iNonOutLiers = numpy.nonzero(DistancesAll < 1.2 * MDistancesAll)[0]
+
 
     # TODO: Combine energy threshold for outlier removal:
     #EnergyMin = numpy.min(MidTermFeatures[1,:])
@@ -832,6 +825,7 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
         #iNonOutLiers2 = numpy.nonzero(DistancesAll < 3.0*MDistancesAll)[0]
         #mtFeaturesToReduce = mtFeaturesToReduce[:, iNonOutLiers2]
         Labels = numpy.zeros((mtFeaturesToReduce.shape[1], ));
+
         LDAstep = 1.0
         LDAstepRatio = LDAstep / stWin
         #print LDAstep, LDAstepRatio
@@ -889,6 +883,7 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
     imax = numpy.argmax(silAll)                                    # position of the maximum sillouette value
     nSpeakersFinal = sRange[imax]                                    # optimal number of clusters
 
+
     # generate the final set of cluster labels
     # (important: need to retrieve the outlier windows: this is achieved by giving them the value of their nearest non-outlier window)
     cls = numpy.zeros((numOfWindows,))
@@ -909,21 +904,17 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
     cls = scipy.signal.medfilt(cls, 13)
     cls = scipy.signal.medfilt(cls, 11)
 
-    sil = silAll[imax]                                        # final sillouette
+    sil = silAll[imax]
+                                        # final sillouette
     classNames = ["speaker{0:d}".format(c) for c in range(nSpeakersFinal)];
-
 
     # load ground-truth if available
     gtFile = fileName.replace('.wav', '.segments');                            # open for annotated file
-    if os.path.isfile(gtFile):                                    # if groundturh exists
+
+    if os.path.isfile(gtFile):                                                  # if groundturh exists
         [segStart, segEnd, segLabels] = readSegmentGT(gtFile)                    # read GT data
         flagsGT, classNamesGT = segs2flags(segStart, segEnd, segLabels, mtStep)            # convert to flags
-        # f = open('diarizationLog.txt', 'w')
-        # f.write(str(Duration) + "\n")
-        # f.write(str(segStart) + "\n")
-        # f.write(str(segEnd) + "\n")
-        # f.write(str(segLabels) + "\n")
-        # f.close()
+
         print 'IdentDUR'
         print Duration
         print 'IdentSTART'
@@ -948,12 +939,14 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
 
         if numOfSpeakers>0:
             ax1 = fig.add_subplot(111)
+
         else:
             ax1 = fig.add_subplot(211)
         ax1.set_yticks(numpy.array(range(len(classNames))))
         ax1.axis((0, Duration, -1, len(classNames)))
         ax1.set_yticklabels(classNames)
         ax1.plot(numpy.array(range(len(cls)))*mtStep+mtStep/2.0, cls)
+
 
     if os.path.isfile(gtFile):
         if PLOT:
@@ -962,15 +955,53 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
         #print "{0:.1f}\t{1:.1f}".format(100*purityClusterMean, 100*puritySpeakerMean)
         if PLOT:
             plt.title("Cluster purity: {0:.1f}% - Speaker purity: {1:.1f}%".format(100*purityClusterMean, 100*puritySpeakerMean) )
+
+
     if PLOT:
         plt.xlabel("time (seconds)")
-        #print sRange, silAll
+        ax = plt.gca()
+
+        line = ax.lines[0]
+        xVal = line.get_xdata()
+        yVal = line.get_ydata()
+
+        segmEnd = [];
+        segmLab = [];
+        for x in xrange(1, len(yVal)):
+            if(yVal[x] == yVal[x-1]):
+                pass
+            else:
+                segmLab.append(yVal[x-1])
+                segmEnd.append(xVal[x-1])
+
+        # Append last element
+        segmLab.append(yVal[len(yVal)-1])
+        segmEnd.append(xVal[len(xVal)-1])
+
+        segmLabel = [];
+
+        for x in xrange(0, len(segmLab)):
+            if(segmLab[x] == 0.0 ):
+                segmLabel.append("speakerA")
+            elif(segmLab[x] == 1.0 ):
+                segmLabel.append("speakerB")
+            elif(segmLab[x] == 2.0 ):
+                segmLabel.append("speakerC")
+            elif(segmLab[x] == 3.0):
+                segmLabel.append("speakerD")
+
+
+        with open('diarizationLog.txt', 'w') as outF:
+            json.dump({'Diarization':{'duration': Duration, 'segmentEnd': segmEnd, 'segmentStart': segmEnd, 'label': segmLabel}}, outF, indent=3)
+
         if numOfSpeakers<=0:
             plt.subplot(212)
             plt.plot(sRange, silAll)
             plt.xlabel("number of clusters");
             plt.ylabel("average clustering's sillouette");
-        plt.show()
+
+        plt.show() # comment it
+
     return cls
 
 def speakerDiarizationEvaluateScript(folderName, LDAs):
