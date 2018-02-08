@@ -43,6 +43,7 @@ public class DiarizationChart extends ApplicationFrame {
         chartFrame.pack();
         chartFrame.setVisible(true);
     }
+
     private DefaultCategoryDataset createDataset(DiarizationInterpreter interpreter) {
         DefaultCategoryDataset result = new DefaultCategoryDataset();
 
@@ -58,7 +59,6 @@ public class DiarizationChart extends ApplicationFrame {
         }
         return result;
     }
-
 
     private JFreeChart createChart(final CategoryDataset dataset) {
 
