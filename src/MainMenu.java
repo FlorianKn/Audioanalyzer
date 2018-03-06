@@ -29,6 +29,7 @@ public class MainMenu   {
     private JLabel placeholder;
     private JLabel dBar;
     private JSpinner dSpinner;
+    private JComboBox model;
     private WavPlayer w = new WavPlayer();
     // Path to wav file
     private String path = null;
@@ -38,6 +39,8 @@ public class MainMenu   {
         frame.setVisible(true);
         styleUi();
 
+        model.addItem("HMM");//HMM-based segmentation
+        model.addItem("FIX");//Fix-sized segmentation
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new CardLayout(0, 0));
         frame.setPreferredSize(new Dimension(700, 400));
@@ -46,6 +49,8 @@ public class MainMenu   {
         frame.getContentPane().add(segmentationMenu);
         frame.getContentPane().add(diarizationMenu);
         frame.pack();
+
+
 
         audiosegmentationButton.addActionListener(new ActionListener() {
             @Override
@@ -169,10 +174,12 @@ public class MainMenu   {
 
                 if(path != null) {
                     PythonBridge bridge = new PythonBridge();
+                    String currModel = model.getSelectedItem().toString();
+                    String cmd = CMD_SEG + path + " -model " + currModel;
 
-                    ArrayList<String> commandLineInput = bridge.executePython(CMD_SEG + path);
+                    ArrayList<String> commandLineInput = bridge.executePython(cmd);
                     SegmentationInterpreter segInterpreter = new SegmentationInterpreter("pyAudioAnalysis/segmentationLog.txt");
-                    segInterpreter.createChart(segInterpreter);
+                    //segInterpreter.createChart(segInterpreter);
                 } else {
                     UiStyle errorMsg = new UiStyle();
                     errorMsg.displayErrorMessage(frame);
