@@ -179,7 +179,7 @@ public class MainMenu   {
 
                     ArrayList<String> commandLineInput = bridge.executePython(cmd);
                     SegmentationInterpreter segInterpreter = new SegmentationInterpreter("pyAudioAnalysis/segmentationLog.txt");
-                    segInterpreter.createChart(segInterpreter);
+                    //segInterpreter.createChart(segInterpreter);
                 } else {
                     UiStyle errorMsg = new UiStyle();
                     errorMsg.displayErrorMessage(frame);
