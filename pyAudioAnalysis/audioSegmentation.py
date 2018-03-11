@@ -22,6 +22,8 @@ import json
 from pydub import AudioSegment
 import itertools
 
+from operator import itemgetter
+
 """ General utility functions """
 
 def smoothMovingAvg(inputSignal, windowLen=11):
@@ -168,6 +170,34 @@ def readSegmentGT(gtFile):
     return numpy.array(segStart), numpy.array(segEnd), segLabel
 
 
+def findIndex(arr, val, i):
+    j = i
+    for j in range(len(arr)):
+        if(val == arr[j]):
+             return j;
+
+
+def selection_sort(source, labels):
+    print source
+    print labels
+    lab = []
+    for i in range(len(source)):
+        mini = min(source[i:]) #find minimum element
+
+        min_index = source[i:].index(mini) #find index of minimum element
+        #min_index = findIndex(source, mini, i)
+        #print min_index
+        source[i + min_index] = source[i] #replace element at min_index with first element
+        source[i] = mini                  #replace first element with min element
+        # music speech silence speech music silence  silence
+		#  137   191     210    246      279  280      295
+        labels[i + min_index] = labels[i] #replace element at min_index with first element
+        labels[i] = labels[min_index + i]
+        #lab.append(labels[min_index])
+        #labels.remove(labels[min_index])
+    #print lab
+
+
 def plotSegmentationResults(flagsInd, flagsIndGT, classNames, mtStep, ONLY_EVALUATE=False):
     '''
     This function plots statistics on the classification-segmentation results produced either by the fix-sized supervised method or the HMM method.
@@ -211,27 +241,23 @@ def plotSegmentationResults(flagsInd, flagsIndGT, classNames, mtStep, ONLY_EVALU
         musicPer = Percentages[1][0]
 
         relevantSegments = [row[1] for row in segs]
-        totalSegments = []
-        totalSegments.append([])
-        totalSegments.append([])
 
-        for counter in range(0, len(relevantSegments)):
-            totalSegments[0].append(relevantSegments[counter])
-            totalSegments[1].append(classes[counter])
+        segList = []
+        segList.append([])
+        segList.append([])
+        segList.append([])
+        segList.append([])		
+		# Convert to list
+        segs = segs.tolist()
 
-        for elem in silence:
-            totalSegments[0].append(elem)
-            totalSegments[1].append("silence")
-        #relevantSegments.sort()
-        #totalSegments.sort(key=lambda x: x[0])
-        #totalSegments = sorted(totalSegments, key=lambda col: col[0])
-        #totalSegments = sorted(totalSegments, key=lambda x: x[0])
-        sorted(totalSegments, key=lambda student: student[0])
-        print totalSegments
-        #sortedSegments = sorted(totalSegments,key=lambda x: x[1])
-        #print totalSegments
-        #with open('segmentationLog.txt', 'w') as outFile:
-         #   json.dump({'Segmentation':{'duration': Duration, 'segments': relevantSegments, 'label': classes, 'speech': speechPerc, 'music': musicPer }}, outFile, indent=3)
+        for row in range(0, len(segs)):
+            segs[row].append(classes[row])
+
+        silenceStart = [i[0] for i in silence]
+        silenceEnd = [i[1] for i in silence]
+
+        with open('segmentationLog.txt', 'w') as outFile:
+            json.dump({'Segmentation':{'duration': Duration, 'segments': relevantSegments, 'label': classes, 'speech': speechPerc, 'music': musicPer, 'silence': { 'silenceStart': silenceStart, 'silenceEnd': silenceEnd }}}, outFile, indent=3)
 
 
         fig = plt.figure()
@@ -544,12 +570,19 @@ def hmmSegmentation(wavFileName, hmmModelName, PLOT=False, gtFileName=""):
     totalSeg = len(silentSeg);
     global silence
     silence = []
-	
+    #print silentSeg
+
+	# Segments with min length 5s
     for counter in range(0, totalSeg):
 	   segmentlength = silentSeg[counter][1] - silentSeg[counter][0];
 	   if(segmentlength > 5000):
-             silence.append(silentSeg[counter][0]/1000)
-             silence.append(silentSeg[counter][1]/1000)	
+             silence.append(silentSeg[counter])	
+    # Round to s	
+    for list in silence:
+         for index in range(0, len(list)):
+             list[index] = list[index]/1000
+    for list in silence:
+        list.append("silence")
 
     #Features = audioFeatureExtraction.stFeatureExtraction(x, Fs, 0.050*Fs, 0.050*Fs);    # feature extraction
     [Features, _] = aF.mtFeatureExtraction(x, Fs, mtWin * Fs, mtStep * Fs, round(Fs * 0.050), round(Fs * 0.050))
