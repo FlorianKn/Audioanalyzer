@@ -14,6 +14,7 @@ public class SegmentationChart extends ApplicationFrame {
         super(title);
 
         final XYSeries series = new XYSeries("Speech(1) Music (2)");
+
         final XYSeries silenceSeries = new XYSeries("Silence (3)");
         double startValue = 0;
 
@@ -41,8 +42,8 @@ public class SegmentationChart extends ApplicationFrame {
             long silenceEndValue = interpreter.getSilenceEnd().get(i);
 
                 silenceSeries.add(silenceStartValue, 0);
-                silenceSeries.add(silenceStartValue, 3);
-                silenceSeries.add(silenceEndValue, 3);
+                silenceSeries.add(silenceStartValue, 2.5);
+                silenceSeries.add(silenceEndValue, 2.5);
                 silenceSeries.add(silenceEndValue, 0);
 
         }
