@@ -8,7 +8,6 @@ $currPath = Get-Location
 $suffix = "\pyAudioAnalysis"
 $newP = "$currPath$suffix"
 
- Out-File -FilePath C:\Users\Florian\Desktop\process.txt -InputObject $model -Encoding ASCII -Width 50
 
 # Works when script is executed from java
 Set-Location $newP

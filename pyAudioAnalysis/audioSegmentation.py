@@ -19,6 +19,10 @@ import hmmlearn.hmm
 import cPickle
 import glob
 import json
+from pydub import AudioSegment
+import itertools
+
+from operator import itemgetter
 
 """ General utility functions """
 
@@ -210,8 +214,22 @@ def plotSegmentationResults(flagsInd, flagsIndGT, classNames, mtStep, ONLY_EVALU
 
         relevantSegments = [row[1] for row in segs]
 
+        segList = []
+        segList.append([])
+        segList.append([])
+        segList.append([])
+        segList.append([])		
+		# Convert to list
+        segs = segs.tolist()
+
+        for row in range(0, len(segs)):
+            segs[row].append(classes[row])
+
+        silenceStart = [i[0] for i in silence]
+        silenceEnd = [i[1] for i in silence]
+
         with open('segmentationLog.txt', 'w') as outFile:
-            json.dump({'Segmentation':{'duration': Duration, 'segments': relevantSegments, 'label': classes, 'speech': speechPerc, 'music': musicPer }}, outFile, indent=3)
+            json.dump({'Segmentation':{'duration': Duration, 'segments': relevantSegments, 'label': classes, 'speech': speechPerc, 'music': musicPer, 'silence': { 'silenceStart': silenceStart, 'silenceEnd': silenceEnd }}}, outFile, indent=3)
 
 
         fig = plt.figure()
@@ -429,6 +447,75 @@ def trainHMM_fromDir(dirPath, hmmModelName, mtWin, mtStep):
 
     return hmm, classesAll
 
+def db_to_float(db, using_amplitude=True):
+    """
+    Converts the input db to a float, which represents the equivalent
+    ratio in power.
+    """
+    db = float(db)
+    if using_amplitude:
+        return 10 ** (db / 20)
+    else: # using power
+	    return 10 ** (db / 10)
+	
+def detect_silence(audio_segment, min_silence_len=1000, silence_thresh=-16, seek_step=1):
+    seg_len = len(audio_segment)
+	
+    #print seg_len
+    # you can't have a silent portion of a sound that is longer than the sound
+    if seg_len < min_silence_len:
+        return []
+
+    # convert silence threshold to a float value (so we can compare it to rms)
+    silence_thresh = db_to_float(silence_thresh) * audio_segment.max_possible_amplitude
+
+    # find silence and add start and end indicies to the to_cut list
+    silence_starts = []
+
+    # check successive (1 sec by default) chunk of sound for silence
+    # try a chunk at every "seek step" (or every chunk for a seek step == 1)
+    last_slice_start = seg_len - min_silence_len
+    slice_starts = range(0, last_slice_start + 1, seek_step)
+
+    # guarantee last_slice_start is included in the range
+    # to make sure the last portion of the audio is seached
+    if last_slice_start % seek_step:
+        slice_starts = itertools.chain(slice_starts, [last_slice_start])
+
+    for i in slice_starts:
+        audio_slice = audio_segment[i:i + min_silence_len]
+        if audio_slice.rms <= silence_thresh:
+            silence_starts.append(i)
+
+    # short circuit when there is no silence
+    if not silence_starts:
+        return []
+
+    # combine the silence we detected into ranges (start ms - end ms)
+    silent_ranges = []
+
+    prev_i = silence_starts.pop(0)
+    current_range_start = prev_i
+
+    for silence_start_i in silence_starts:
+        continuous = (silence_start_i == prev_i + 1)
+
+        # sometimes two small blips are enough for one particular slice to be
+        # non-silent, despite the silence all running together. Just combine
+        # the two overlapping silent ranges.
+        silence_has_gap = silence_start_i > (prev_i + min_silence_len)
+
+        if not continuous and silence_has_gap:
+            silent_ranges.append([current_range_start,
+                                  prev_i + min_silence_len])
+            current_range_start = silence_start_i
+        prev_i = silence_start_i
+
+    silent_ranges.append([current_range_start,
+                          prev_i + min_silence_len])
+
+    #print silent_ranges
+    return silent_ranges
 
 def hmmSegmentation(wavFileName, hmmModelName, PLOT=False, gtFileName=""):
     [Fs, x] = audioBasicIO.readAudioFile(wavFileName)          # read audio data
@@ -447,6 +534,25 @@ def hmmSegmentation(wavFileName, hmmModelName, PLOT=False, gtFileName=""):
     except:
         fo.close()
     fo.close()
+
+    wav = AudioSegment.from_wav(wavFileName)
+	
+    silentSeg = detect_silence(wav, 1000, -30, 5);
+    totalSeg = len(silentSeg);
+    global silence
+    silence = []
+
+	# Segments with min length 5s
+    for counter in range(0, totalSeg):
+	   segmentlength = silentSeg[counter][1] - silentSeg[counter][0];
+	   if(segmentlength > 5000):
+             silence.append(silentSeg[counter])	
+    # Round to s	
+    for list in silence:
+         for index in range(0, len(list)):
+             list[index] = list[index]/1000
+    for list in silence:
+        list.append("silence")
 
     #Features = audioFeatureExtraction.stFeatureExtraction(x, Fs, 0.050*Fs, 0.050*Fs);    # feature extraction
     [Features, _] = aF.mtFeatureExtraction(x, Fs, mtWin * Fs, mtStep * Fs, round(Fs * 0.050), round(Fs * 0.050))
@@ -538,9 +644,29 @@ def mtFileClassification(inputFile, modelName, modelType, plotResults=False, gtF
             flagsInd[i] = flagsInd[i + 1]
     (segs, classes) = flags2segs(flags, mtStep)            # convert fix-sized flags to segments and classes
     segs[-1] = len(x) / float(Fs)
+	
+    wav = AudioSegment.from_wav(inputFile)
+	
+    silentSeg = detect_silence(wav, 1000, -30, 5);
+    totalSeg = len(silentSeg);
+    global silence
+    silence = []
 
-    # Load grount-truth:
-    #if os.path.isfile(gtFile):
+	# Segments with min length 5s
+    for counter in range(0, totalSeg):
+	   segmentlength = silentSeg[counter][1] - silentSeg[counter][0];
+	   if(segmentlength > 5000):
+             silence.append(silentSeg[counter])	
+    # Round to s	
+    for list in silence:
+         for index in range(0, len(list)):
+             list[index] = list[index]/1000
+    for list in silence:
+        list.append("silence")
+
+	
+	
+	# Load grount-truth:
     if os.path.isfile(gtFile):
         [segStartGT, segEndGT, segLabelsGT] = readSegmentGT(gtFile)
 

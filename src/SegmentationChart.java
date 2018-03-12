@@ -13,8 +13,8 @@ public class SegmentationChart extends ApplicationFrame {
     public SegmentationChart(String title, SegmentationInterpreter interpreter) {
         super(title);
 
-        final XYSeries series = new XYSeries("Music(1) Speech (2)");
-
+        final XYSeries series = new XYSeries("Speech(1) Music (2)");
+        final XYSeries silenceSeries = new XYSeries("Silence (3)");
         double startValue = 0;
 
         for(int i = 0; i < interpreter.label.size(); i++) {
@@ -23,22 +23,37 @@ public class SegmentationChart extends ApplicationFrame {
 
             if (label.contains("music")) {
 
-                series.add(startValue, 1);
-                series.add(currentValue, 1);
-                startValue = currentValue;
-            } else {
                 series.add(startValue, 2);
                 series.add(currentValue, 2);
+                startValue = currentValue;
+            } else {
+                series.add(startValue, 1);
+                series.add(currentValue, 1);
                 startValue = currentValue;
             }
         }
 
+        int silenceFirstValue = 0;
+        silenceSeries.add(silenceFirstValue, 0);
+
+        for(int i = 0; i < interpreter.silenceStart.size(); i++) {
+            long silenceStartValue = interpreter.getSilenceStart().get(i);
+            long silenceEndValue = interpreter.getSilenceEnd().get(i);
+
+                silenceSeries.add(silenceStartValue, 0);
+                silenceSeries.add(silenceStartValue, 3);
+                silenceSeries.add(silenceEndValue, 3);
+                silenceSeries.add(silenceEndValue, 0);
+
+        }
+
         final XYSeriesCollection data = new XYSeriesCollection(series);
+        data.addSeries(silenceSeries);
 
         final JFreeChart chart = ChartFactory.createXYLineChart(
                 "Audiosegmentation",
                 "Seconds",
-                "Music/Speech",
+                "Music/Speech/Silence",
                 data,
                 PlotOrientation.VERTICAL,
                 true,
