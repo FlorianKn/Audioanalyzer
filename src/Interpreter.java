@@ -11,6 +11,16 @@ public abstract class Interpreter {
     protected double duration;
     protected ArrayList<Double> segmentStart;
     protected ArrayList<String> label;
+    protected ArrayList<Long> silenceStart;
+    protected ArrayList<Long> silenceEnd;
+
+    public ArrayList<Long> getSilenceStart() {
+        return silenceStart;
+    }
+
+    public ArrayList<Long> getSilenceEnd() {
+        return silenceEnd;
+    }
 
     public double getDuration() {
         return duration;

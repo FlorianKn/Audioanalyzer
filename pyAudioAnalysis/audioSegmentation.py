@@ -170,34 +170,6 @@ def readSegmentGT(gtFile):
     return numpy.array(segStart), numpy.array(segEnd), segLabel
 
 
-def findIndex(arr, val, i):
-    j = i
-    for j in range(len(arr)):
-        if(val == arr[j]):
-             return j;
-
-
-def selection_sort(source, labels):
-    print source
-    print labels
-    lab = []
-    for i in range(len(source)):
-        mini = min(source[i:]) #find minimum element
-
-        min_index = source[i:].index(mini) #find index of minimum element
-        #min_index = findIndex(source, mini, i)
-        #print min_index
-        source[i + min_index] = source[i] #replace element at min_index with first element
-        source[i] = mini                  #replace first element with min element
-        # music speech silence speech music silence  silence
-		#  137   191     210    246      279  280      295
-        labels[i + min_index] = labels[i] #replace element at min_index with first element
-        labels[i] = labels[min_index + i]
-        #lab.append(labels[min_index])
-        #labels.remove(labels[min_index])
-    #print lab
-
-
 def plotSegmentationResults(flagsInd, flagsIndGT, classNames, mtStep, ONLY_EVALUATE=False):
     '''
     This function plots statistics on the classification-segmentation results produced either by the fix-sized supervised method or the HMM method.
@@ -566,11 +538,9 @@ def hmmSegmentation(wavFileName, hmmModelName, PLOT=False, gtFileName=""):
     wav = AudioSegment.from_wav(wavFileName)
 	
     silentSeg = detect_silence(wav, 1000, -30, 5);
-    #print silentSeg;
     totalSeg = len(silentSeg);
     global silence
     silence = []
-    #print silentSeg
 
 	# Segments with min length 5s
     for counter in range(0, totalSeg):
@@ -674,9 +644,29 @@ def mtFileClassification(inputFile, modelName, modelType, plotResults=False, gtF
             flagsInd[i] = flagsInd[i + 1]
     (segs, classes) = flags2segs(flags, mtStep)            # convert fix-sized flags to segments and classes
     segs[-1] = len(x) / float(Fs)
+	
+    wav = AudioSegment.from_wav(inputFile)
+	
+    silentSeg = detect_silence(wav, 1000, -30, 5);
+    totalSeg = len(silentSeg);
+    global silence
+    silence = []
 
-    # Load grount-truth:
-    #if os.path.isfile(gtFile):
+	# Segments with min length 5s
+    for counter in range(0, totalSeg):
+	   segmentlength = silentSeg[counter][1] - silentSeg[counter][0];
+	   if(segmentlength > 5000):
+             silence.append(silentSeg[counter])	
+    # Round to s	
+    for list in silence:
+         for index in range(0, len(list)):
+             list[index] = list[index]/1000
+    for list in silence:
+        list.append("silence")
+
+	
+	
+	# Load grount-truth:
     if os.path.isfile(gtFile):
         [segStartGT, segEndGT, segLabelsGT] = readSegmentGT(gtFile)
 
