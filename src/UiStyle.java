@@ -43,7 +43,7 @@ public class UiStyle {
     }
 
     public void styleSpinner(JSpinner spinner) {
-        spinner.setModel(new SpinnerNumberModel(2, 2, 4, 1));
+        spinner.setModel(new SpinnerNumberModel(2, 0, 4, 1));
         JFormattedTextField tf = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
         tf.setEditable(false);
     }
