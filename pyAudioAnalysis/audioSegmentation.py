@@ -1057,8 +1057,8 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
             print label
         print 'IdentMUSIC'
 
-        with open('diarizationLog.txt', 'w') as outF:
-            json.dump({'Diarization':{'duration': Duration, 'segmentEnd': segEnd.tolist(), 'segmentStart': segStart.tolist(), 'label': segLabels}}, outF, indent=3)
+        #with open('diarizationLog.txt', 'w') as outF:
+         #   json.dump({'Diarization':{'duration': Duration, 'segmentEnd': segEnd.tolist(), 'segmentStart': segStart.tolist(), 'label': segLabels}}, outF, indent=3)
 
     if PLOT:
         fig = plt.figure()
@@ -1100,6 +1100,31 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
                 segmLab.append(yVal[x-1])
                 segmEnd.append(xVal[x-1])
 
+				
+        wav = AudioSegment.from_wav(fileName)
+	
+        silentSeg = detect_silence(wav, 1000, -30, 5);
+
+        totalSeg = len(silentSeg);
+        global silence
+        silence = []
+
+        # Segments with min length 5s
+        for counter in range(0, totalSeg):
+            segmentlength = silentSeg[counter][1] - silentSeg[counter][0];
+	        
+            if(segmentlength > 5000):
+                silence.append(silentSeg[counter])	
+        print silence
+        # Round to s	
+        for list in silence:
+            for index in range(0, len(list)):
+                list[index] = list[index]/1000
+    
+        for list in silence:
+            list.append("silence")
+		
+		
         # Append last element
         segmLab.append(yVal[len(yVal)-1])
         segmEnd.append(xVal[len(xVal)-1])
@@ -1116,9 +1141,11 @@ def speakerDiarization(fileName, numOfSpeakers, mtSize=2.0, mtStep=0.2, stWin=0.
             elif(segmLab[x] == 3.0):
                 segmLabel.append("speakerD")
 
+        silenceStart = [i[0] for i in silence]
+        silenceEnd = [i[1] for i in silence]
 
         with open('diarizationLog.txt', 'w') as outF:
-            json.dump({'Diarization':{'duration': Duration, 'segmentEnd': segmEnd, 'segmentStart': segmEnd, 'label': segmLabel}}, outF, indent=3)
+            json.dump({'Diarization':{'duration': Duration, 'segmentEnd': segmEnd, 'segmentStart': segmEnd, 'label': segmLabel, 'silence': { 'silenceStart': silenceStart, 'silenceEnd': silenceEnd }}}, outF, indent=3)
 
         if numOfSpeakers<=0:
             plt.subplot(212)
