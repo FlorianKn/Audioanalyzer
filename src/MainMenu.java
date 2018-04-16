@@ -5,13 +5,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class MainMenu   {
-    public JPanel mainPanel;
-    public JPanel segmentationMenu;
-    public JPanel diarizationMenu;
-    public JPanel menu;
+    private JPanel mainPanel;
+    private JPanel segmentationMenu;
+    private JPanel diarizationMenu;
+    private JPanel menu;
 
-    static final String CMD_DIA = "powershell.exe pyAudioAnalysis\\diarizationScript.ps1 -wavFile ";
-    String CMD_SEG = "cmd /c powershell -File pyAudioAnalysis\\segmentationScript.ps1 -wavFile ";
+    private static final String CMD_DIA = "powershell.exe pyAudioAnalysis\\diarizationScript.ps1 -wavFile ";
+    private static final String CMD_SEG = "cmd /c powershell -File pyAudioAnalysis\\segmentationScript.ps1 -wavFile ";
 
     private JButton audiodiarizationButton;
     private JButton audiosegmentationButton;

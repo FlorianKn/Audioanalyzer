@@ -33,7 +33,7 @@ public class SegmentationInterpreter extends Interpreter {
         return music;
     }
 
-    protected void createChart(SegmentationInterpreter interpreter) {
+    public void createChart(SegmentationInterpreter interpreter) {
         SegmentationChart chart = new SegmentationChart("Segmentation", interpreter);
         chart.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
