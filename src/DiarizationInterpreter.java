@@ -23,7 +23,7 @@ public class DiarizationInterpreter extends Interpreter {
         return segmentEnd;
     }
 
-    protected void createChart(DiarizationInterpreter interpreter) {
+    public void createChart(DiarizationInterpreter interpreter) {
         DiarizationChart chart = new DiarizationChart("Diarization", interpreter);
         chart.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }

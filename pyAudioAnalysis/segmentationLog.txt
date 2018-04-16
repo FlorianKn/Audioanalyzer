@@ -1,28 +1,42 @@
 {
    "Segmentation": {
       "segments": [
-         137.0, 
-         246.0, 
-         279.0, 
-         295.0
+         4.0, 
+         6.0, 
+         20.0, 
+         25.0, 
+         27.0, 
+         30.0, 
+         40.0, 
+         51.0, 
+         86.0, 
+         104.0, 
+         110.0
       ], 
       "label": [
+         "speech", 
+         "music", 
+         "speech", 
+         "music", 
+         "speech", 
+         "music", 
+         "speech", 
          "music", 
          "speech", 
          "music", 
          "speech"
       ], 
-      "music": 57.6271186440678, 
-      "duration": 295.0, 
-      "speech": 42.3728813559322, 
+      "music": 35.45454545454545, 
+      "duration": 110.0, 
+      "speech": 64.54545454545455, 
       "silence": {
          "silenceEnd": [
-            210, 
-            295
+            11, 
+            110
          ], 
          "silenceStart": [
-            191, 
-            280
+            0, 
+            104
          ]
       }
    }
