@@ -8,9 +8,9 @@ public class SoundRecorder {
      * Defines an audio format
      */
     private static AudioFormat getAudioFormat() {
-        float sampleRate = 16000;
-        int sampleSizeInBits = 8;
-        int channels = 2;
+        float sampleRate = 48000;
+        int sampleSizeInBits = 16;
+        int channels = 1;
         boolean signed = true;
         boolean bigEndian = true;
         AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits,
